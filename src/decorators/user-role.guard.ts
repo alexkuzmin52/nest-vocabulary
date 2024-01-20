@@ -1,4 +1,3 @@
-
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { AuthService } from '../modules/auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
@@ -24,7 +23,12 @@ export class UserRoleGuard implements CanActivate {
     });
     console.log('payload : ', payload);
     await this.authService.checkIsValidToken(payload._id, token);
-
-    return true;
+    const requiredRoles = this.reflector.getAllAndMerge<string[]>('roles', [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    // console.log('requiredRoles */*/*/*/*/*/*/*/ ', requiredRoles);
+    if (!requiredRoles) return true;
+    return requiredRoles.includes(payload.role);
   }
 }

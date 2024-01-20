@@ -1,4 +1,4 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { UserRoleEnum } from '../../../constants';
 import { UserStatusEnum } from '../../../constants';
 import { Document } from 'mongoose';
@@ -10,9 +10,11 @@ export type UserType = IUser & Document;
 export class User {
   @Prop({ required: true })
   name: string;
+
+  // @Prop({ required:false })
   // surname?: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   email: string;
 
   @Prop({ required: true })
@@ -21,9 +23,16 @@ export class User {
   @Prop({ required: true, enum: UserRoleEnum, default: UserRoleEnum.USER })
   role: string;
 
+  // @Prop({ required:false })
   // age?: number;
+
+  // @Prop({ required:false })
   // phone?: string;
+
+  // @Prop({ required:false })
   // gender?: string;
+
+  // @Prop({ required:false })
   // photo?: string;
 
   @Prop({
@@ -32,9 +41,6 @@ export class User {
     default: UserStatusEnum.PENDING,
   })
   status: string;
-
-  // @Prop({ default: null })
-  // token: string;
 
   @Prop()
   createdAt: string;

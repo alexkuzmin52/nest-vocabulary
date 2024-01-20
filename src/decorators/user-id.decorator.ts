@@ -5,7 +5,7 @@ export const UserId = createParamDecorator(
   (data: unknown, context: ExecutionContext) => {
     const reg = context.switchToHttp().getRequest();
     const decode = jwtDecode(reg.headers.authorization);
-    console.log('++++++++++++++++++++++++++++++++++++++', decode);
+    // console.log('++++++++++++++++++++++++++++++++++++++', decode);
     return decode['_id'];
   },
 );

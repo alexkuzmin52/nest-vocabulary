@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserRegisterDto } from './dto/user-register.dto';
+import { UserRegisterDto } from './dto';
 import * as bcrypt from 'bcrypt';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
@@ -13,7 +13,6 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class AuthService {
-  // @ts-ignore
   constructor(
     @InjectModel(Auth.name) private authModel: Model<AuthType>,
     private userService: UserService,
@@ -27,7 +26,7 @@ export class AuthService {
       ...userRegisterDto,
       password: hashedPassword,
     });
-    console.log(registeredUser);
+    // console.log(registeredUser);
 
     const confirmToken = this.jwtService.sign(
       {
@@ -47,7 +46,7 @@ export class AuthService {
   }
 
   async confirm(confirmToken: string): Promise<object> {
-    console.log(confirmToken);
+    // console.log(confirmToken);
     const payload = await this.jwtService.verify(confirmToken, {
       secret: this.configService.get('JWT_CONFIRM_EMAIL_SECRET'),
     });
@@ -77,7 +76,7 @@ export class AuthService {
     // console.log('isValidPassword-------------------', isValidPassword);
     if (!isValidPassword) throw new UnauthorizedException();
 
-    this.userService.updateUser(userByEmail._id, {
+    await this.userService.updateUser(userByEmail._id, {
       status: UserStatusEnum.LOGGED_IN,
     });
 
@@ -93,11 +92,13 @@ export class AuthService {
   }
 
   async createTokensPair(user: IUser): Promise<Partial<IAuth>> {
+    console.log('user ??????????????????????????????????', user);
     const payload = {
       email: user.email,
       _id: user._id,
       role: user.role,
     };
+    console.log('payload ??????????????????????????????????', payload);
     const access_token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
       expiresIn: this.configService.get('JWT_ACCESS_TOKEN_SECRET_LIFETIME'),
@@ -111,11 +112,34 @@ export class AuthService {
   }
 
   async checkIsValidToken(_id: string, token: string): Promise<void> {
+    console.log(
+      '========================== checkIsValidToken ====================',
+    );
     const isValidToken = await this.authModel.findOne({
       userId: _id,
       access_token: token,
     });
+    console.log('=======================', isValidToken);
 
     if (!isValidToken) throw new UnauthorizedException();
+  }
+
+  async block(userId: string): Promise<{ message: string }> {
+    const blockedUser = await this.userService.blockUserById(userId);
+    console.log(blockedUser);
+    const deletedAuth = await this.authModel.findOneAndDelete({ userId });
+    console.log('deletedAuth', deletedAuth);
+    return {
+      message:
+        'Your account has been blocked. Contact your administrator to find out why this happened.',
+    };
+  }
+
+  async unblock(userId: string) {
+    const unBlockedUser = await this.userService.unBlockUserById(userId);
+    console.log(unBlockedUser);
+    return {
+      message: 'Your account has been unblocked. Please login.',
+    };
   }
 }

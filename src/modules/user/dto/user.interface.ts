@@ -1,6 +1,6 @@
 export interface IUser {
   _id: string;
-  // name: string;
+  name: string;
   // surname?: string;
   email: string;
   password: string;
@@ -10,6 +10,6 @@ export interface IUser {
   // gender?: string;
   // photo?: string;
   status: string;
-  token: string;
+  // token: string;
   createdAt: string;
 }
