@@ -21,4 +21,23 @@ export class FlashCardService {
   async getAllFlashCards(userId: string): Promise<IFlashCard[]> {
     return await this.flashCardModel.find({ userId }).exec();
   }
+
+  async updateFlashCardByParam(
+    flashCardId: string,
+    updateFlashCardDto: UpdateFlashCardDto,
+  ): Promise<IFlashCard> {
+    const updatedFlashCard = await this.flashCardModel
+      .findByIdAndUpdate(flashCardId, updateFlashCardDto, { new: true })
+      .exec();
+    console.log(updatedFlashCard);
+    return updatedFlashCard;
+  }
+
+  async deleteFlashCardById(flashCardId: string) {
+    const deletedFlashCard = await this.flashCardModel
+      .findByIdAndDelete(flashCardId)
+      .exec();
+    console.log(deletedFlashCard);
+    return deletedFlashCard;
+  }
 }
