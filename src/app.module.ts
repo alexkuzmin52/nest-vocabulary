@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { configuration } from '../config/configurarion';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as process from 'process';
+import { FilesModule } from './modules/files/files.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import * as process from 'process';
     UserModule,
     AuthModule,
     LogModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

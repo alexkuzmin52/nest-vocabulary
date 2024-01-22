@@ -24,7 +24,6 @@ import { UserRoleEnum } from '../../constants';
 export class FlashCardController {
   constructor(private flashCardService: FlashCardService) {}
 
-  // @ApiSecurity('access-key')
   @Roles(UserRoleEnum.USER)
   @Post('')
   @ApiOperation({ summary: 'Create a new card' })
@@ -39,8 +38,6 @@ export class FlashCardController {
     );
   }
 
-  // @ApiSecurity('access-key')
-  // @UseGuards(UserRoleGuard)
   @Roles(UserRoleEnum.USER)
   @Get('')
   // @Roles(UserRoleEnum.USER)
@@ -66,5 +63,11 @@ export class FlashCardController {
   @Delete('/:id')
   async deleteFlashCard(@Param('id') flashCardId: string): Promise<IFlashCard> {
     return await this.flashCardService.deleteFlashCardById(flashCardId);
+  }
+
+  @Roles(UserRoleEnum.USER)
+  @Post('csv')
+  async createFlashCardsFromCSV(@UserId() id: string): Promise<void> {
+    await this.flashCardService.createNewFlashCardsFromCSV(id);
   }
 }

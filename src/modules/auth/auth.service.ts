@@ -112,14 +112,14 @@ export class AuthService {
   }
 
   async checkIsValidToken(_id: string, token: string): Promise<void> {
-    console.log(
-      '========================== checkIsValidToken ====================',
-    );
+    // console.log(
+    //   '========================== checkIsValidToken ====================',
+    // );
     const isValidToken = await this.authModel.findOne({
       userId: _id,
       access_token: token,
     });
-    console.log('=======================', isValidToken);
+    // console.log('=======================', isValidToken);
 
     if (!isValidToken) throw new UnauthorizedException();
   }
