@@ -7,10 +7,10 @@ import { Reflector } from '@nestjs/core';
 @Injectable()
 export class UserRoleGuard implements CanActivate {
   constructor(
-    private authService: AuthService,
-    private jwtService: JwtService,
-    private configService: ConfigService,
-    private reflector: Reflector,
+    private readonly authService: AuthService,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+    private readonly reflector: Reflector,
   ) {}
 
   //

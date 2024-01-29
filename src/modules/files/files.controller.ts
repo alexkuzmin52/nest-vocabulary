@@ -15,6 +15,8 @@ import { ApiFile } from '../../decorators/api-file.decorator';
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
+  // TODO move upload to service
+
   @Post('upload')
   @ApiFile()
   uploadFile(

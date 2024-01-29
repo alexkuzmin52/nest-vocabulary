@@ -10,6 +10,9 @@ import { configuration } from '../config/configurarion';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as process from 'process';
 import { FilesModule } from './modules/files/files.module';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionsFilter } from './errors/all-exceptions.filter';
+import { LogService } from './modules/log/log.service';
 
 @Module({
   imports: [
@@ -27,6 +30,13 @@ import { FilesModule } from './modules/files/files.module';
     FilesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
+    LogService,
+  ],
 })
 export class AppModule {}

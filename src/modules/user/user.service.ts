@@ -9,7 +9,9 @@ import { UserStatusEnum } from 'src/constants';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserType>) {}
+  constructor(
+    @InjectModel(User.name) private readonly userModel: Model<UserType>,
+  ) {}
 
   async registerUser(userRegisterDto: UserRegisterDto): Promise<IUser> {
     const registeredUser = new this.userModel(userRegisterDto);
@@ -24,7 +26,10 @@ export class UserService {
 
   async findUserByEmail(email: string): Promise<IUser> {
     const user = await this.userModel.findOne({ email }).exec();
-    console.log(user);
+    // console.log(user);
+    if (!user) {
+      throw new NotFoundException(`user with e-mail /${email}/ not found`);
+    }
     return user;
   }
 
@@ -32,15 +37,18 @@ export class UserService {
     return this.userModel.find().exec();
   }
 
-  async getUserById(id: string): Promise<IUser> {
-    const userById = await this.userModel.findById(id).exec();
-    if (!userById) throw new NotFoundException();
+  async getUserById(userId: string): Promise<IUser> {
+    const userById = await this.userModel.findById(userId).exec();
+    if (!userById) throw new NotFoundException(`user with ID /${userId}/ not found`);
     return userById;
   }
 
   async getUsersByFilter(query: UserQueryFilterDto): Promise<IUser[]> {
     const usersByFilter = await this.userModel.find(query).exec();
-    console.log(usersByFilter);
+    if (usersByFilter.length == 0) {
+      throw new NotFoundException(`Users with /${query}/ not found`)
+    }
+    // console.log(usersByFilter);
     return usersByFilter;
   }
 
@@ -68,6 +76,7 @@ export class UserService {
       { status: UserStatusEnum.LOGGED_OUT },
       { new: true },
     );
+    if (!unblockedUser) throw new NotFoundException(`user with ID /${userId}/ not found`);
     console.log(unblockedUser);
     return unblockedUser;
   }

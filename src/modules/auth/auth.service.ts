@@ -14,10 +14,10 @@ import { Model } from 'mongoose';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(Auth.name) private authModel: Model<AuthType>,
-    private userService: UserService,
-    private jwtService: JwtService,
-    private configService: ConfigService,
+    @InjectModel(Auth.name) private readonly authModel: Model<AuthType>,
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   async register(userRegisterDto: UserRegisterDto): Promise<object> {

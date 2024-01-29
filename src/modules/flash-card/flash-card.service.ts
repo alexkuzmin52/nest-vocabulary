@@ -1,19 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateFlashCardDto, IFlashCard, UpdateFlashCardDto } from './dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { FlashCard, FlashCardType } from './schemas/flash-card.schema';
 import { Model } from 'mongoose';
-// import * as path from 'path';
 import * as fs from 'fs';
 import { parse } from 'csv-parse';
-// import * as fs from 'fs';
-// import { CsvParser, ParsedData } from 'nest-csv-parser';
 
 @Injectable()
 export class FlashCardService {
   constructor(
-    @InjectModel(FlashCard.name) private flashCardModel: Model<FlashCardType>,
-    // private csvParser: CsvParser,
+    @InjectModel(FlashCard.name)
+    private readonly flashCardModel: Model<FlashCardType>,
   ) {}
 
   async createNewFlashCard(
@@ -35,6 +37,9 @@ export class FlashCardService {
     const updatedFlashCard = await this.flashCardModel
       .findByIdAndUpdate(flashCardId, updateFlashCardDto, { new: true })
       .exec();
+    if (!updatedFlashCard) {
+      throw new NotFoundException(`Card with Id /${flashCardId}/ not found`);
+    }
     console.log(updatedFlashCard);
     return updatedFlashCard;
   }
@@ -43,30 +48,24 @@ export class FlashCardService {
     const deletedFlashCard = await this.flashCardModel
       .findByIdAndDelete(flashCardId)
       .exec();
+    if (!deletedFlashCard) {
+      throw new NotFoundException(`Card with Id /${flashCardId}/ not found`);
+    }
     console.log(deletedFlashCard);
     return deletedFlashCard;
   }
 
-  // async createNewFlashCardsFromCSV(): Promise<void> {
-  //   const stream = fs.createReadStream('./upload/test_vocabulary.csv');
-  //   const entities: ParsedData<InstanceType<typeof CreateFlashCardDto>> =
-  //     await this.csvParser.parse(stream, CreateFlashCardDto);
-  //   console.log(entities);
-  //   const res = JSON.stringify(entities);
-  //   console.log(res);
-  // }
-
-  async createNewFlashCardsFromCSV(id: string): Promise<void> {
-    console.log(
-      '******************** createNewFlashCardsFromCSV ********************',
-    );
+  async createNewFlashCardsFromCSV(id: string): Promise<IFlashCard[]> {
+    // console.log(
+    //   '******************** createNewFlashCardsFromCSV ********************',
+    // );
     // const csvFilePath = path.resolve(__dirname, 'upload/test_vocabulary.csv');
-    const csvFilePath = './upload/test_vocabulary.csv';
-    console.log('csvFilePath :  ', csvFilePath);
+    const csvFilePath = './upload/test-vocabulary#4.csv';
+    // console.log('csvFilePath :  ', csvFilePath);
 
     const headers = ['front_side', 'back_side', 'topic'];
     const fileContent = fs.readFileSync(csvFilePath, { encoding: 'utf-8' });
-    console.log('fileContent :  ', fileContent);
+    // console.log('fileContent :  ', fileContent);
 
     parse(
       fileContent,
@@ -79,11 +78,29 @@ export class FlashCardService {
           console.error(error);
         }
 
-        console.log('Result', result);
+        // console.log('Result', result);
         for (const res of result) {
           this.createNewFlashCard(res, id);
         }
       },
     );
+    const addedCards = await this.flashCardModel.find({ userId: id }).exec();
+
+    if (addedCards.length == 0) {
+      throw new HttpException(
+        'Nothing documents parsed',
+        HttpStatus.NO_CONTENT,
+      );
+    }
+    return addedCards;
+  }
+
+  async findFlashCardById(cardId: string): Promise<IFlashCard> {
+    const cardById = await this.flashCardModel.findById(cardId).exec();
+    console.log('cardById : ', cardById);
+    if (!cardById) {
+      throw new NotFoundException(`Card with Id /${cardId}/ not found`);
+    }
+    return cardById;
   }
 }
