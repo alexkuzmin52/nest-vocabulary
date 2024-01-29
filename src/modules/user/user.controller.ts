@@ -1,5 +1,11 @@
 import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
-import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import {
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiSecurity,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UserRoleGuard } from '../../decorators/user-role.guard';
 import { Roles } from '../../decorators/roles.decorator';
 import { UserRoleEnum } from '../../constants';
@@ -7,7 +13,6 @@ import { UserService } from './user.service';
 import { IUser } from './dto';
 import { UserQueryFilterDto } from './dto/user-query-filter.dto';
 import { User } from './schemas/user.schema';
-import { FlashCard } from '../flash-card/schemas/flash-card.schema';
 
 @ApiTags('Users')
 @ApiSecurity('access-key')

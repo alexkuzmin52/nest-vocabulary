@@ -6,13 +6,10 @@ import {
   Param,
   Post,
   Put,
-  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import {
-  ApiBody,
   ApiCreatedResponse,
-  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -70,7 +67,7 @@ export class FlashCardController {
   @ApiNotFoundResponse({ description: 'Card not found' })
   @Roles(UserRoleEnum.USER)
   @Get(':id')
-  async getFlashCard(@Param('id') cardId:string):Promise<IFlashCard> {
+  async getFlashCard(@Param('id') cardId: string): Promise<IFlashCard> {
     return await this.flashCardService.findFlashCardById(cardId);
   }
 
@@ -82,9 +79,6 @@ export class FlashCardController {
   // @ApiNotFoundResponse({ description: 'Card not found' })
   @Roles(UserRoleEnum.USER)
   @Get('query')
-
-
-
   @ApiOperation({ summary: 'Update card' })
   @ApiOkResponse({
     type: FlashCard,
@@ -120,6 +114,6 @@ export class FlashCardController {
   @Roles(UserRoleEnum.USER)
   @Post('csv')
   async createFlashCardsFromCSV(@UserId() id: string): Promise<IFlashCard[]> {
-   return  await this.flashCardService.createNewFlashCardsFromCSV(id);
+    return await this.flashCardService.createNewFlashCardsFromCSV(id);
   }
 }

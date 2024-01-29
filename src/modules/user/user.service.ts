@@ -39,14 +39,16 @@ export class UserService {
 
   async getUserById(userId: string): Promise<IUser> {
     const userById = await this.userModel.findById(userId).exec();
-    if (!userById) throw new NotFoundException(`user with ID /${userId}/ not found`);
+    if (!userById) {
+      throw new NotFoundException(`user with ID /${userId}/ not found`);
+    }
     return userById;
   }
 
   async getUsersByFilter(query: UserQueryFilterDto): Promise<IUser[]> {
     const usersByFilter = await this.userModel.find(query).exec();
     if (usersByFilter.length == 0) {
-      throw new NotFoundException(`Users with /${query}/ not found`)
+      throw new NotFoundException(`Users with /${query}/ not found`);
     }
     // console.log(usersByFilter);
     return usersByFilter;
@@ -76,7 +78,9 @@ export class UserService {
       { status: UserStatusEnum.LOGGED_OUT },
       { new: true },
     );
-    if (!unblockedUser) throw new NotFoundException(`user with ID /${userId}/ not found`);
+    if (!unblockedUser) {
+      throw new NotFoundException(`user with ID /${userId}/ not found`);
+    }
     console.log(unblockedUser);
     return unblockedUser;
   }

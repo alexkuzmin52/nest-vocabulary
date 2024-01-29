@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsDecimal, IsInt, IsOptional, IsString, Length, Max, Min } from 'class-validator';
+import { IsInt, IsOptional, IsString, Length, Max, Min } from 'class-validator';
 
 export class FlashCardQueryFilterDto {
   @ApiPropertyOptional({
@@ -42,5 +42,4 @@ export class FlashCardQueryFilterDto {
   level: number;
   // counter: number;
   // failed: number;
-
 }
