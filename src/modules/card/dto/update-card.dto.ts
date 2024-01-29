@@ -1,7 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsInt, IsOptional, IsString, Length, Max, Min } from 'class-validator';
+import { IsOptional, IsString, Length } from 'class-validator';
 
-export class FlashCardQueryFilterDto {
+export class UpdateCardDto {
   @ApiPropertyOptional({
     description: 'Word/expression in target language (e.g. English)',
     example: 'brother',
@@ -30,16 +30,4 @@ export class FlashCardQueryFilterDto {
   @IsString()
   @Length(2, 256)
   topic: string;
-
-  @ApiPropertyOptional({
-    description: 'Topic in target language (e.g. English)',
-    example: 'family',
-  })
-  @IsOptional()
-  @IsInt()
-  @Min(1)
-  @Max(5)
-  level: number;
-  // counter: number;
-  // failed: number;
 }

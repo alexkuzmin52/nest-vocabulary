@@ -1,4 +1,4 @@
-export interface IFlashCard {
+export interface ICard {
   _id: string;
   userId: string;
   front_side: string;

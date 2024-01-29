@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { FlashCardModule } from './modules/flash-card/flash-card.module';
+import { CardModule } from './modules/card/card.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { LogModule } from './modules/log/log.module';
@@ -23,7 +23,7 @@ import { LogService } from './modules/log/log.service';
     }),
     // MongooseModule.forRoot(process.env.MONGODB_URL),
     MongooseModule.forRoot('mongodb://localhost:27017/my-vocabulary'),
-    FlashCardModule,
+    CardModule,
     UserModule,
     AuthModule,
     LogModule,

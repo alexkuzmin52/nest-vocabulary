@@ -1,14 +1,14 @@
-import { IFlashCard } from '../dto';
+import { ICard } from '../dto';
 import { Document, SchemaTypes, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 
-export type FlashCardType = IFlashCard & Document;
+export type CardType = ICard & Document;
 
 @Schema({ timestamps: true })
-export class FlashCard {
+export class Card {
   @ApiProperty({
-    description: 'Reference to the owner ID of this flash-card.',
+    description: 'Reference to the owner ID of this card.',
   })
   @Prop({
     required: false,
@@ -47,4 +47,4 @@ export class FlashCard {
   @Prop({ required: false, default: '' })
   topic: string;
 }
-export const flashCardSchema = SchemaFactory.createForClass(FlashCard);
+export const CardSchema = SchemaFactory.createForClass(Card);

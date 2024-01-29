@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, Length } from 'class-validator';
 
-export class CreateFlashCardDto {
+export class CreateCardDto {
   @ApiProperty({
     description: 'Word/expression in target language (e.g. English)',
     example: 'brother',
