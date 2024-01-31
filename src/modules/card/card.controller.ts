@@ -112,8 +112,8 @@ export class CardController {
     description: 'Cards created successful',
   })
   @Roles(UserRoleEnum.USER)
-  @Post('csv')
-  async createCardsFromCSV(@UserId() id: string): Promise<ICard[]> {
-    return await this.CardService.createNewCardsFromCSV(id);
+  @Post('csv/:file')
+  async createCardsFromCSV(@UserId() id: string, @Param('file') file_name: string): Promise<ICard[]> {
+    return await this.CardService.createNewCardsFromCSV(id, file_name);
   }
 }

@@ -10,6 +10,8 @@ import { Card, CardType } from './schemas/card.schema';
 import { Model } from 'mongoose';
 import * as fs from 'fs';
 import { parse } from 'csv-parse';
+import * as path from 'path';
+import * as process from 'process';
 
 @Injectable()
 export class CardService {
@@ -55,18 +57,18 @@ export class CardService {
     return deletedCard;
   }
 
-  async createNewCardsFromCSV(id: string): Promise<ICard[]> {
-    // console.log(
-    //   '******************** createNewCardsFromCSV ********************',
-    // );
-    // const csvFilePath = path.resolve(__dirname, 'upload/test_vocabulary.csv');
-    const csvFilePath = './upload/test-vocabulary#4.csv';
-    // console.log('csvFilePath :  ', csvFilePath);
+  async createNewCardsFromCSV(id: string, file_name: string): Promise<ICard[]> {
+    console.log(
+      '******************** createNewCardsFromCSV ********************',
+    );
+    const csvFilePath = path.resolve(process.cwd(), `upload/${file_name}`);
+    console.log('csvFilePath :  ', csvFilePath);
 
     const headers = ['front_side', 'back_side', 'topic'];
-    const fileContent = fs.readFileSync(csvFilePath, { encoding: 'utf-8' });
-    // console.log('fileContent :  ', fileContent);
 
+    // *************************************************************
+    const fileContent = fs.readFileSync(csvFilePath, { encoding: 'utf-8' });
+    console.log('pars');
     parse(
       fileContent,
       {
@@ -78,14 +80,14 @@ export class CardService {
           console.error(error);
         }
 
-        // console.log('Result', result);
         for (const res of result) {
           this.createNewCard(res, id);
         }
       },
     );
+    console.log('addedCards');
     const addedCards = await this.CardModel.find({ userId: id }).exec();
-
+    console.log(addedCards);
     if (addedCards.length == 0) {
       throw new HttpException(
         'Nothing documents parsed',
@@ -93,6 +95,7 @@ export class CardService {
       );
     }
     return addedCards;
+    // *****************************************************
   }
 
   async findCardById(cardId: string): Promise<ICard> {
