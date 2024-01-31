@@ -27,7 +27,6 @@ export class AuthController {
     return await this.authService.confirm(confirmToken);
   }
 
-  // @ApiSecurity('access-key')
   @Post('login')
   @ApiOperation({
     summary: 'User login',

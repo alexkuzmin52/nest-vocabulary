@@ -20,7 +20,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
       statusCode: status,
       timestamp: new Date().toISOString(),
       path: request.url,
-      // message: exception.message || 'Internal server error',
       message: exception.message || HttpStatus.INTERNAL_SERVER_ERROR,
     });
   }

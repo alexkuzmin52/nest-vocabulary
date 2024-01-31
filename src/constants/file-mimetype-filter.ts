@@ -18,5 +18,4 @@ export const fileMimetypeFilter = (...mimetypes: string[]) => {
       );
     }
   };
-
 };

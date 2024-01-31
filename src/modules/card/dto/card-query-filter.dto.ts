@@ -40,6 +40,4 @@ export class CardQueryFilterDto {
   @Min(1)
   @Max(5)
   level: number;
-  // counter: number;
-  // failed: number;
 }

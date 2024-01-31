@@ -66,7 +66,6 @@ export class CardService {
 
     const headers = ['front_side', 'back_side', 'topic'];
 
-    // *************************************************************
     const fileContent = fs.readFileSync(csvFilePath, { encoding: 'utf-8' });
     console.log('pars');
     parse(
@@ -95,7 +94,6 @@ export class CardService {
       );
     }
     return addedCards;
-    // *****************************************************
   }
 
   async findCardById(cardId: string): Promise<ICard> {

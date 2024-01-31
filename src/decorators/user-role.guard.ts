@@ -13,7 +13,6 @@ export class UserRoleGuard implements CanActivate {
     private readonly reflector: Reflector,
   ) {}
 
-  //
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest();
     const token = req.headers.authorization;
@@ -27,7 +26,6 @@ export class UserRoleGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
-    // console.log('requiredRoles */*/*/*/*/*/*/*/ ', requiredRoles);
     if (!requiredRoles) return true;
     return requiredRoles.includes(payload.role);
   }

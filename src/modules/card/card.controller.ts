@@ -29,7 +29,7 @@ import { Card } from './schemas/card.schema';
 @UseGuards(UserRoleGuard)
 @Controller('card')
 export class CardController {
-  constructor(private readonly CardService: CardService) {}
+  constructor(private readonly cardService: CardService) {}
 
   @Roles(UserRoleEnum.USER)
   @Post('')
@@ -38,25 +38,20 @@ export class CardController {
     type: Card,
     description: 'Card created successful',
   })
-  // @ApiBody({type: CreateCardDto})
   async createCard(
     @Body() createCardDto: CreateCardDto,
     @UserId() userId: string,
   ): Promise<ICard> {
     // console.log(userId);
-    return await this.CardService.createNewCard(
-      createCardDto,
-      userId,
-    );
+    return await this.cardService.createNewCard(createCardDto, userId);
   }
 
   @ApiOperation({ summary: 'Get all cards' })
   @ApiOkResponse({ type: [Card], description: 'All vocabulary cards' })
   @Roles(UserRoleEnum.USER)
   @Get('')
-  // @Roles(UserRoleEnum.USER)
   async getCards(@UserId() userId: string): Promise<ICard[]> {
-    return await this.CardService.getAllCards(userId);
+    return await this.cardService.getAllCards(userId);
   }
 
   @ApiOperation({ summary: 'Find card with a specific ID' })
@@ -68,7 +63,7 @@ export class CardController {
   @Roles(UserRoleEnum.USER)
   @Get(':id')
   async getCard(@Param('id') cardId: string): Promise<ICard> {
-    return await this.CardService.findCardById(cardId);
+    return await this.cardService.findCardById(cardId);
   }
 
   @ApiOperation({ summary: 'Find cards by filter ' })
@@ -76,7 +71,6 @@ export class CardController {
     type: [Card],
     description: 'Found cards by filter',
   })
-  // @ApiNotFoundResponse({ description: 'Card not found' })
   @Roles(UserRoleEnum.USER)
   @Get('query')
   @ApiOperation({ summary: 'Update card' })
@@ -91,10 +85,7 @@ export class CardController {
     @Param('id') CardId: string,
     @Body() updateCardDto: UpdateCardDto,
   ): Promise<ICard> {
-    return await this.CardService.updateCardByParam(
-      CardId,
-      updateCardDto,
-    );
+    return await this.cardService.updateCardByParam(CardId, updateCardDto);
   }
 
   @ApiOperation({ summary: 'Remove card' })
@@ -103,7 +94,7 @@ export class CardController {
   @Roles(UserRoleEnum.USER)
   @Delete('/:id')
   async deleteCard(@Param('id') CardId: string): Promise<ICard> {
-    return await this.CardService.deleteCardById(CardId);
+    return await this.cardService.deleteCardById(CardId);
   }
 
   @ApiOperation({ summary: 'Upload cards from CSV file' })
@@ -113,7 +104,10 @@ export class CardController {
   })
   @Roles(UserRoleEnum.USER)
   @Post('csv/:file')
-  async createCardsFromCSV(@UserId() id: string, @Param('file') file_name: string): Promise<ICard[]> {
-    return await this.CardService.createNewCardsFromCSV(id, file_name);
+  async createCardsFromCSV(
+    @UserId() id: string,
+    @Param('file') file_name: string,
+  ): Promise<ICard[]> {
+    return await this.cardService.createNewCardsFromCSV(id, file_name);
   }
 }

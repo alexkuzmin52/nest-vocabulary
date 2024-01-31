@@ -11,9 +11,6 @@ export class User {
   @Prop({ required: true })
   name: string;
 
-  // @Prop({ required:false })
-  // surname?: string;
-
   @Prop({ required: true, unique: true })
   email: string;
 
@@ -22,18 +19,6 @@ export class User {
 
   @Prop({ required: true, enum: UserRoleEnum, default: UserRoleEnum.USER })
   role: string;
-
-  // @Prop({ required:false })
-  // age?: number;
-
-  // @Prop({ required:false })
-  // phone?: string;
-
-  // @Prop({ required:false })
-  // gender?: string;
-
-  // @Prop({ required:false })
-  // photo?: string;
 
   @Prop({
     required: true,

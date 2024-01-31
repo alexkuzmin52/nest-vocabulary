@@ -26,7 +26,6 @@ export class AuthService {
       ...userRegisterDto,
       password: hashedPassword,
     });
-    // console.log(registeredUser);
 
     const confirmToken = this.jwtService.sign(
       {
@@ -73,7 +72,6 @@ export class AuthService {
       password,
       userByEmail.password,
     );
-    // console.log('isValidPassword-------------------', isValidPassword);
     if (!isValidPassword) throw new UnauthorizedException();
 
     await this.userService.updateUser(userByEmail._id, {
@@ -112,14 +110,10 @@ export class AuthService {
   }
 
   async checkIsValidToken(_id: string, token: string): Promise<void> {
-    // console.log(
-    //   '========================== checkIsValidToken ====================',
-    // );
     const isValidToken = await this.authModel.findOne({
       userId: _id,
       access_token: token,
     });
-    // console.log('=======================', isValidToken);
 
     if (!isValidToken) throw new UnauthorizedException();
   }

@@ -78,5 +78,6 @@ export class UserQueryFilterDto {
   @IsNotEmpty()
   @IsEnum(UserStatusEnum)
   status: string;
+
   // createdAt: string;
 }

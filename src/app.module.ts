@@ -21,7 +21,6 @@ import { LogService } from './modules/log/log.service';
       envFilePath: `config/env/.${process.env.NODE_ENV}.dev`,
       load: [configuration],
     }),
-    // MongooseModule.forRoot(process.env.MONGODB_URL),
     MongooseModule.forRoot('mongodb://localhost:27017/my-vocabulary'),
     CardModule,
     UserModule,

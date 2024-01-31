@@ -46,16 +46,6 @@ export class UserController {
   async getFilteredUsers(
     @Query() filter: UserQueryFilterDto,
   ): Promise<IUser[]> {
-    // console.log(
-    //   'userQueryFilterDto ********************************************',
-    //   filter,
-    // );
     return await this.userService.getUsersByFilter(filter);
   }
-
-  // @ApiOperation({ summary: 'Update user'})
-  // @Put('/:id')
-  //   async updateUser(@Param('id') userId: string, @Body() updateUserDto:UpdateUserDto): Promise<IUser> {
-  //     return await this.userService.updateUserRoleStatus(updateUserDto, userId);
-  // }
 }
